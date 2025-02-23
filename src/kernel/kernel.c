@@ -1,100 +1,87 @@
 #include <stddef.h>
 #include <stdint.h>
 
-enum VGA_COLORS
+#include "tty/tty.h"
+
+static inline uint8_t inb(uint16_t port)
 {
-	VGA_COLOR_BLACK = 0,
-	VGA_COLOR_BLUE = 1,
-	VGA_COLOR_GREEN = 2,
-	VGA_COLOR_CYAN = 3,
-	VGA_COLOR_RED = 4,
-	VGA_COLOR_MAGENTA = 5,
-	VGA_COLOR_BROWN = 6,
-	VGA_COLOR_LIGHT_GRAY = 7,
-	VGA_COLOR_DARK_GRAY = 8,
-	VGA_COLOR_LIGHT_BLUE = 9,
-	VGA_COLOR_LIGHT_GREEN = 10,
-	VGA_COLOR_LIGHT_CYAN = 11,
-	VGA_COLOR_LIGHT_RED = 12,
-	VGA_COLOR_LIGHT_MAGENTA = 13,
-	VGA_COLOR_LIGHT_BROWN = 14,
-	VGA_COLOR_WHITE = 15
-};
-
-static const size_t VGA_WIDTH = 80;
-static const size_t VGA_HEIGHT = 25;
-
-size_t terminal_row = 0, terminal_column = 0;
-
-uint8_t terminal_color;
-uint16_t *terminal_buffer = (uint16_t *)0xb8000;
-
-static inline uint8_t
-vga_entry_color(enum VGA_COLORS foreground, enum VGA_COLORS background)
-{
-	return foreground | background << 4;
+	uint8_t result;
+	__asm__ volatile("inb %1, %0" : "=a"(result) : "Nd"(port));
+	return result;
 }
 
-static inline uint16_t vga_entry(unsigned char character, uint8_t color)
-{
-	return (uint16_t)character | (uint16_t)color << 8;
-}
+const size_t CODES_PRESSED_SIZE = 59;
+const char CODES_PRESSED[59] = {
+	0,	 27,  '1',	'2',  '3',	'4', '5', '6',	'7', '8', '9', '0',
+	'-', '=', '\b', '\t', 'q',	'w', 'e', 'r',	't', 'y', 'u', 'i',
+	'o', 'p', '[',	']',  '\n', 0,	 'a', 's',	'd', 'f', 'g', 'h',
+	'j', 'k', 'l',	';',  '\'', '`', 0,	  '\\', 'z', 'x', 'c', 'v',
+	'b', 'n', 'm',	',',  '.',	'/', 0,	  0,	0,	 ' ', 0};
 
-size_t strlen(const char *str)
-{
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
-}
-
-void terminal_initialize(void)
-{
-	terminal_row = 0;
-	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GRAY, VGA_COLOR_BLACK);
-	for (size_t y = 0; y < VGA_HEIGHT; y++)
-		for (size_t x = 0; x < VGA_WIDTH; x++)
-		{
-			const size_t index = y * VGA_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', terminal_color);
-		}
-}
-
-void terminal_insert_entry_at(const char character, size_t x, size_t y)
-{
-	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(character, terminal_color);
-}
-
-void terminal_insert_entry(const char character)
-{
-	terminal_insert_entry_at(character, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH)
-	{
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
-	}
-}
-
-void terminal_write(const char *data, size_t size)
-{
-	for (size_t i = 0; i < size; i++)
-	{
-		terminal_insert_entry(data[i]);
-	}
-}
-
-void terminal_write_string(const char *data)
-{
-	terminal_write(data, strlen(data));
-}
+size_t HISTORY[VGA_HEIGHT];
 
 void kernel_main(void)
 {
-	terminal_initialize();
+	tty_initialize();
 
-	// write to screen
-	terminal_write_string("Hello, Kernel!");
+	uint8_t last_scancode;
+
+	while (1)
+	{
+		if (tty_row > VGA_HEIGHT - 1)
+			tty_row = 0;
+
+		uint8_t scancode = inb(0x60);
+
+		if (!scancode)
+			continue;
+
+		if (last_scancode == scancode)
+			continue;
+
+		if (scancode & 0x80)
+		{
+			last_scancode = 0;
+			continue;
+		}
+
+		if (scancode > CODES_PRESSED_SIZE - 1)
+			continue;
+
+		last_scancode = scancode;
+
+		char key = CODES_PRESSED[scancode];
+
+		if (key == '\b')
+		{
+			if (tty_column == 0)
+			{
+				if (tty_row == 0)
+					continue;
+				tty_row -= 1;
+				tty_column = HISTORY[tty_row];
+			}
+			else
+			{
+				tty_column -= 1;
+				tty_insert_entry(0);
+				HISTORY[tty_row] -= 1;
+				tty_column -= 1;
+			}
+		}
+		else if (key == '\n')
+		{
+			tty_row += 1;
+			tty_column = 0;
+		}
+		else if (key == 0)
+		{
+			continue;
+		}
+		else
+		{
+			HISTORY[tty_row] += 1;
+			tty_insert_entry(key);
+		}
+	}
 }

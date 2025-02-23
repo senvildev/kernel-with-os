@@ -1,4 +1,3 @@
-bin/binary/*.bin
-bin/iso/*.iso
-bin/object/*.o
-bin/grub/**
+bin/binary/**/*.bin
+bin/iso/**/*.iso
+bin/object/**/*.o

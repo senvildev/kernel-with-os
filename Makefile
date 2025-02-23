@@ -1,27 +1,50 @@
-build:
-	# build bootstrap
-	i686-elf-as src/bootstrap/bootstrap.asm -o bin/object/bootstrap.o
-	# build kernel
-	i686-elf-gcc -c src/kernel/kernel.c -o bin/object/kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions
-	# link all
-	i686-elf-gcc -T src/linker/linker.ld -o bin/binary/os.bin -ffreestanding -O2 -nostdlib bin/object/bootstrap.o bin/object/kernel.o -lgcc
+AS = i686-elf-as
+CC = i686-elf-gcc
+LD = $(CC)
+
+ASFLAGS =
+CFLAGS = -ffreestanding -O2 -Wall -Wextra -fno-exceptions
+LDFLAGS = -ffreestanding -O2 -nostdlib
+
+SRC_DIR = src
+OBJ_DIR = bin/object
+BIN_DIR = bin/binary
+
+SRC_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
+SRC_C = $(shell find $(SRC_DIR)/kernel -name "*.c")
+SRC_LD = $(SRC_DIR)/linker/linker.ld
+
+OBJ_ASM = $(OBJ_DIR)/bootstrap.o
+OBJ_C = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
+
+TARGET = $(BIN_DIR)/os.bin
+
+all: $(TARGET)
+
+# build kernel files (and c code)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.c | $(OBJ_DIR)
+	mkdir -p $(dir $@)
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+# build bootstrap (and assembly code)
+$(OBJ_DIR)/bootstrap.o: $(SRC_ASM) | $(OBJ_DIR)
+	$(AS) $(ASFLAGS) $< -o $@
+
+# link everything together
+$(TARGET): $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
+	$(LD) -T $(SRC_LD) -o $@ $(LDFLAGS) $^ -lgcc
 
 clean:
-	rm -rf bin/binary/*
-	rm -rf bin/object/*
-	rm -rf bin/iso/*
-	rm -rf bin/syslinux/*
+	rm -rf $(OBJ_DIR)/*
+	rm -rf $(BIN_DIR)/*
+	rm -rf bin/grub
 
 iso:
 	rm -rf bin/grub
 	mkdir bin/grub/boot/grub -p
 	cp bin/binary/os.bin bin/grub/boot/os.bin
 	cp config/grub.cfg bin/grub/boot/grub
-	
 	grub-mkrescue -o bin/iso/system.iso bin/grub
 
-start:
-	qemu-system-i386 -kernel bin/binary/os.bin
 
-startiso:
-	qemu-system-i386 -cdrom bin/iso/system.iso
+.PHONY: all
