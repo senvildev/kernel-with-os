@@ -46,5 +46,7 @@ iso:
 	cp config/grub.cfg bin/grub/boot/grub
 	grub-mkrescue -o bin/iso/system.iso bin/grub
 
+start:
+	qemu-system-x86_64 -kernel $(TARGET)
 
 .PHONY: all
