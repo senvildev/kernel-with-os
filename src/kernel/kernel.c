@@ -27,5 +27,5 @@ void kernel_main(void)
 	gdt_setup();
 	kernel_log(0, "set up global descriptor table");
 
-	printn("\nslava kokaini");
+	print("\nslava kokaini");
 }
