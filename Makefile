@@ -19,12 +19,14 @@ OBJ_C = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
 
 TARGET = $(BIN_DIR)/os.bin
 
+INCLUDE = -I./src/kernel
+
 all: $(TARGET)
 
 # build kernel files (and c code)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.c | $(OBJ_DIR)
 	mkdir -p $(dir $@)
-	$(CC) -c $< -o $@ $(CFLAGS)
+	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE)
 
 # build bootstrap (and assembly code)
 $(OBJ_DIR)/bootstrap.o: $(SRC_ASM) | $(OBJ_DIR)
