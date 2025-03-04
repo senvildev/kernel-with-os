@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - "-working-directory=/home/senvil/Documents/Projects/kernel-with-os/"
+    - "-Isrc/kernel"
