@@ -2,9 +2,8 @@
 #include <stdint.h>
 
 // TTY macro
-
-#ifndef TTY
-#define TTY
+#ifndef TTY_H
+#define TTY_H
 
 #define VGA_WIDTH 80  // width of the screen
 #define VGA_HEIGHT 25 // height of the screen
