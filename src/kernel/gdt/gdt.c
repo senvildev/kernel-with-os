@@ -7,6 +7,7 @@ struct gdt_entry gdt_entries[GDT_TABLE_SIZE];
 
 struct gdt_pointer gdt_pointer;
 
+// function to setup singular entries in the GDT
 void gdt_entry_setup(
 	int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags)
 {
@@ -31,6 +32,7 @@ void gdt_entry_setup(
 	gdt_entry_target->access = access;
 }
 
+// function to setup the GDT
 void gdt_setup(void)
 {
 	// get the size of the GDT
