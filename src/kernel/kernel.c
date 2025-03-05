@@ -2,10 +2,11 @@
 #include <stdint.h>
 
 #include "tty/tty.h"
-#include "gdt/gdt.h"
 
 #include "libs/kernel_log/kernel_log.h"
 #include "libs/stdout/stdout.h"
+
+#include "protected_mode/protected_mode.h"
 
 // #include "input/keyboard/keyboard.h"
 
@@ -23,9 +24,14 @@ void kernel_main(void)
 {
 	tty_initialize();
 
-	kernel_log(3, "setting up global descriptor table");
-	gdt_setup();
-	kernel_log(0, "set up global descriptor table");
+	protected_mode_enter();
 
-	print("\nslava kokaini");
+	kernel_log(1, "couldn't start protected mode");
+}
+
+void protected_kernel_main(void)
+{
+	kernel_log(0, "enabled and entered protected mode");
+	while (1)
+		;
 }
