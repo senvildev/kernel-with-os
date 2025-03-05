@@ -2,22 +2,13 @@
 #include <stdint.h>
 
 #include "tty.h"
+#include "libs/string/string.h"
 
 size_t tty_row = 0;
 size_t tty_column = 0;
 
 uint8_t tty_color;
 uint16_t *tty_buffer = (uint16_t *)0xb8000;
-
-// gets the length of passed string
-size_t strlen(const char *str)
-{
-	size_t len = 0; // initialize length
-	// add 1 as long as the character exists OR is valid (not code 0)
-	while (str[len] || str[len] != 0)
-		len++;
-	return len; // return the length
-}
 
 // initialize the TTY
 void tty_initialize(void)

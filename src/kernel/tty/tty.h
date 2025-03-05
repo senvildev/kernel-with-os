@@ -61,11 +61,6 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 	return (uint16_t)character | (uint16_t)color << 8;
 }
 
-// returns the length of a passed string/set of characters
-// arguments:
-//	  - str - string/set of characters
-size_t strlen(const char *str);
-
 // initialize the TTY with a blank screen
 void tty_initialize(void);
 
