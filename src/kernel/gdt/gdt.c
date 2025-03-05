@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+#include "libs/kernel_log/kernel_log.h"
+
 #include "gdt.h"
 
 // create gdt entry table
@@ -8,7 +10,7 @@ struct gdt_entry gdt_entries[GDT_TABLE_SIZE];
 struct gdt_pointer gdt_pointer;
 
 // function to setup singular entries in the GDT
-void gdt_entry_setup(
+void gdt_set_entry(
 	int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags)
 {
 	// get the segment element from the GDT
@@ -32,21 +34,16 @@ void gdt_entry_setup(
 	gdt_entry_target->access = access;
 }
 
-// function to setup the GDT
-void gdt_setup(void)
+// function to setup and load the GDT
+void gdt_load(void)
 {
+	kernel_log(3, "loading the GDT");
 	// get the size of the GDT
 	gdt_pointer.limit = sizeof(gdt_entries) - 1;
 	// get the address of the GDT
 	gdt_pointer.base = (uint32_t)(uintptr_t)&gdt_entries;
-
-	// create a null descriptor
-	gdt_entry_setup(0, 0, 0, 0, 0);
-	// create a kernel mode code segment
-	gdt_entry_setup(1, 0x00400000, 0x003FFFFF, 0x9A, 0xC);
-	// create a kernel mode data segment
-	gdt_entry_setup(2, 0x00800000, 0x003FFFFFF, 0x92, 0xC);
-
 	// load the gdt using assembly
-	asm volatile("lgdt (%0) " : : "r"(&gdt_pointer));
+	asm volatile("lgdt %0" : : "m"(gdt_pointer));
+
+	kernel_log(0, "loaded the GDT");
 }

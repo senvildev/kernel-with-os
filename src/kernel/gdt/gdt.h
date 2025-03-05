@@ -40,8 +40,8 @@ extern struct gdt_pointer gdt_pointer;
 //	  - limit - size of the segment (how far it extends from the base)
 //	  - access - defines access rights to the entry
 //	  - flags - the granularity of the entry
-void gdt_setup_entry(
+void gdt_set_entry(
 	int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags);
 
-// sets up all gates required by the system
-void gdt_setup(void);
+// function that sets up and loads the GDT using assembly
+void gdt_load(void);
