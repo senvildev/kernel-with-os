@@ -14,13 +14,13 @@ const char *kernel_log_text[4] = {
 void kernel_log(int type, const char *message)
 {
 	// if incorrect type, stop code
-	if (type < 0 && type > 3)
+	if (type < 0 || type > 3)
 		return;
 	// prepare the message to print
 	char *full_message = (char *)kernel_log_text[type];
 	// concatenate the prepared variable with the passed message
-	strcat(full_message, message);
-	strcat(full_message, "\n"); // add a newline
+	full_message = strcat(full_message, message);
+	full_message = strcat(full_message, "\n"); // add a newline
 	// print the message to the screen
 	print(full_message);
 }
