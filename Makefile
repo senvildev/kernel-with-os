@@ -51,4 +51,7 @@ iso:
 start:
 	qemu-system-x86_64 -kernel $(TARGET)
 
+dev:
+	qemu-system-x86_64 -kernel $(TARGET) -S -gdb tcp::2222
+
 .PHONY: all
