@@ -33,7 +33,7 @@ void protected_mode_enter(void)
 					 "mov %%ax, %%es;"	// move ax into extra segment
 					 "mov %%ax, %%ss;"	// move ax into stack segment
 					 "call *%0;"		// call the main PM kernel function
-					 "hlt;"
+					 "hlt;"				// halt old kernel code running
 					 :
 					 : "r"(protected_kernel_main) // store the function to work
 												  // in during protected mode in

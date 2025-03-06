@@ -10,11 +10,13 @@ SRC_DIR = src
 OBJ_DIR = bin/object
 BIN_DIR = bin/binary
 
-SRC_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
+SRC_BOOTSTRAP_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
+SRC_ASM = $(shell find $(SRC_DIR)/kernel -name "*.asm")
 SRC_C = $(shell find $(SRC_DIR)/kernel -name "*.c")
 SRC_LD = $(SRC_DIR)/linker/linker.ld
 
-OBJ_ASM = $(OBJ_DIR)/bootstrap.o
+OBJ_BOOTSTRAP_ASM = $(OBJ_DIR)/bootstrap.o
+OBJ_ASM = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_ASM:.asm=.o))
 OBJ_C = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
 
 TARGET = $(BIN_DIR)/os.bin
@@ -29,11 +31,15 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.c | $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE)
 
 # build bootstrap (and assembly code)
-$(OBJ_DIR)/bootstrap.o: $(SRC_ASM) | $(OBJ_DIR)
+$(OBJ_DIR)/bootstrap.o: $(SRC_BOOTSTRAP_ASM) | $(OBJ_DIR)
+	$(AS) $(ASFLAGS) $< -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.asm | $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) $< -o $@
 
 # link everything together
-$(TARGET): $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
+$(TARGET): $(OBJ_BOOTSTRAP_ASM) $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
 	$(LD) -T $(SRC_LD) -o $@ $(LDFLAGS) $^ -lgcc
 
 clean:

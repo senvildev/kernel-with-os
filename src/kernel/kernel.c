@@ -8,6 +8,10 @@
 
 #include "protected_mode/protected_mode.h"
 
+#include "idt/interrupt_handlers.h"
+
+#include "idt/idt.h"
+
 // #include "input/keyboard/keyboard.h"
 
 const size_t CODES_PRESSED_SIZE = 59;
@@ -29,9 +33,21 @@ void kernel_main(void)
 	kernel_log(1, "couldn't start protected mode");
 }
 
+void divide(void)
+{
+	int x = 5;
+	int y = 0;
+	int z = x / y;
+	kernel_log(0, "divided by zero. what?");
+}
+
 void protected_kernel_main(void)
 {
-	kernel_log(0, "enabled and entered protected mode");
+	kernel_log(0, "enabled and entered protected mode\n");
+
+	idt_setup();
+	kernel_log(3, "attempting to divide by zero");
+	divide();
 	while (1)
 		;
 }

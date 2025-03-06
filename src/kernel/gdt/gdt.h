@@ -23,10 +23,10 @@ struct gdt_pointer
 #ifndef GDT_H
 #define GDT_H
 
-#define GDT_TABLE_SIZE 3
+#define GDT_SEGMENT_LIMIT 5
 
 // GDT table
-extern struct gdt_entry gdt_entries[GDT_TABLE_SIZE];
+extern struct gdt_entry gdt_entries[GDT_SEGMENT_LIMIT];
 
 // pointer to the GDT
 extern struct gdt_pointer gdt_pointer;
