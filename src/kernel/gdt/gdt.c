@@ -28,7 +28,7 @@ void gdt_set_entry(
 	// upper 4 bits of the limit
 	gdt_entry_target->limit_high = (limit >> 16) & 0x0F;
 	// granularity of the segment based on the flags
-	gdt_entry_target->limit_high |= (flags & 0x0F);
+	gdt_entry_target->limit_high |= (flags & 0xF0);
 
 	// lower 16 bits of the start address
 	gdt_entry_target->base_low = base & 0xFFFF;
