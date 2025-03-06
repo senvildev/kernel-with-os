@@ -4,7 +4,7 @@
 
 #include "libs/kernel_log/kernel_log.h"
 
-#include "interrupt_handlers.h"
+#include "idt/interrupt_handlers.h"
 
 struct idt_entry idt_entries[IDT_INTERRUPT_LIMIT];
 struct idt_pointer idt_pointer;
@@ -33,14 +33,21 @@ void idt_load(void)
 	idt_pointer.base = (uint32_t)(uintptr_t)&idt_entries;
 
 	__asm__ volatile("lidt %0" : : "m"(idt_pointer));
-	kernel_log(0, "loaded the IDT");
+
+	__asm__ volatile("sti");
+
+	kernel_log(0, "loaded the IDT and enabled interrupts");
 }
 
 void idt_setup(void)
 {
 	kernel_log(3, "setting up the IDT");
 
-	idt_set_entry(0, (uintptr_t)isr0, 0x08, 0x8E);
+	isr_handler_t *handlers = get_isr_handlers();
+	for (int i = 0; i < IDT_INTERRUPT_LIMIT; i++)
+		idt_set_entry(i, (uintptr_t)handlers[i], 0x08, 0x8E);
+
+	kernel_log(0, "set up IDT interrupts");
 
 	idt_load();
 }

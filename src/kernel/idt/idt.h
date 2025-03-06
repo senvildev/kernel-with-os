@@ -3,7 +3,7 @@
 #ifndef IDT_H
 #define IDT_H
 
-#define IDT_INTERRUPT_LIMIT 256
+#define IDT_INTERRUPT_LIMIT 32
 
 struct idt_entry
 {
