@@ -33,21 +33,10 @@ void kernel_main(void)
 	kernel_log(1, "couldn't start protected mode");
 }
 
-void divide(void)
-{
-	int x = 5;
-	int y = 0;
-	int z = x / y;
-	kernel_log(0, "divided by zero. what?");
-}
-
 void protected_kernel_main(void)
 {
 	kernel_log(0, "enabled and entered protected mode\n");
 
 	idt_setup();
-	kernel_log(3, "attempting to divide by zero");
-	divide();
-	while (1)
-		;
+	print("\n");
 }
