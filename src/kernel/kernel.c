@@ -41,5 +41,8 @@ void protected_kernel_main(void)
 	kernel_log(0, "enabled and entered protected mode\n");
 
 	idt_setup();
-	print("\n");
+
+	__asm__ volatile("sti");
+
+	print("\nhi");
 }
