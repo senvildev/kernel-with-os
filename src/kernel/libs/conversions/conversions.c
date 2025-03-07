@@ -1,8 +1,11 @@
 #include <stdint.h>
 
-#include "conversions.h"
+#include "libs/conversions/conversions.h"
 
-char *addr_to_string(char *buffer, uintptr_t address)
+// list of hexadecimal characters
+const char HEX_DIGITS[] = "0123456789ABCDEF";
+
+char *address_to_string(char *buffer, uintptr_t address)
 {
 	// add "0x" prefix
 	buffer[0] = '0';

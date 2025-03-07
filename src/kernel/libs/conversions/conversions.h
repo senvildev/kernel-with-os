@@ -4,7 +4,7 @@
 #define CONVERSIONS_H
 
 // list of hexadecimal characters
-const char HEX_DIGITS[] = "0123456789ABCDEF";
+extern const char HEX_DIGITS[];
 
 #endif
 
