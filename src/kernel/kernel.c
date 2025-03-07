@@ -12,7 +12,7 @@
 
 #include "idt/idt.h"
 
-// #include "input/keyboard/keyboard.h"
+/* MOVE THIS CODE LATER
 
 const size_t CODES_PRESSED_SIZE = 59;
 const char CODES_PRESSED[59] = {
@@ -23,7 +23,9 @@ const char CODES_PRESSED[59] = {
 	'b', 'n', 'm',	',',  '.',	'/', 0,	  0,	0,	 ' ', 0};
 
 size_t HISTORY[VGA_HEIGHT];
+*/
 
+// system initialization function
 void kernel_main(void)
 {
 	tty_initialize();
@@ -33,6 +35,7 @@ void kernel_main(void)
 	kernel_log(1, "couldn't start protected mode");
 }
 
+// kernel working under protected mode
 void protected_kernel_main(void)
 {
 	kernel_log(0, "enabled and entered protected mode\n");

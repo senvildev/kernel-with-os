@@ -21,9 +21,12 @@ void protected_mode_enter(void)
 	gdt_set_entry(3, 0, 0xFFFFF, 0xFA, 0xCF); // 1MB userspace code segment
 	gdt_set_entry(4, 0, 0xFFFFF, 0xF2, 0xCF); // 1MB userspace data segment
 	kernel_log(0, "set up the GDT segments");
+
+	// load the GDT
 	gdt_load();
 
 	kernel_log(3, "enabling protected mode");
 
+	// switch to protected mode using an assembly function
 	protected_mode_switch();
 }

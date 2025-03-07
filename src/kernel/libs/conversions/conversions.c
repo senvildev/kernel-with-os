@@ -1,37 +1,33 @@
 #include <stdint.h>
 
-char *addr_to_string(char *buffer, uintptr_t addr)
-{
-	const char hex_digits[] = "0123456789ABCDEF";
+#include "conversions.h"
 
-	// Add "0x" prefix
+char *addr_to_string(char *buffer, uintptr_t address)
+{
+	// add "0x" prefix
 	buffer[0] = '0';
 	buffer[1] = 'x';
 
-	// Process address 4 bits at a time, from most significant to least
+	// process address 4 bits at a time, from most significant to least
 	for (int i = 0; i < sizeof(uintptr_t) * 2; i++)
 	{
-		// Extract 4 bits (a hex digit) starting from the most significant
+		// extract 4 bits (a hex digit) starting from the most significant
 		int shift = (sizeof(uintptr_t) * 8) - 4 - (i * 4);
 		int digit;
 
 		if (shift < 0)
-		{
-			// Handle architectures where sizeof(uintptr_t)*2 isn't a multiple
+			// handle architectures where sizeof(uintptr_t)*2 isn't a multiple
 			// of 4
-			digit = addr & 0xF;
-		}
+			digit = address & 0xF;
 		else
-		{
-			digit = (addr >> shift) & 0xF;
-		}
+			digit = (address >> shift) & 0xF;
 
 		// Convert to ASCII and store
-		buffer[i + 2] = hex_digits[digit];
+		buffer[i + 2] = HEX_DIGITS[digit];
 	}
 
-	// Null terminate the string
+	// null terminate the string
 	buffer[sizeof(uintptr_t) * 2 + 2] = '\0';
-
+	// return the buffer
 	return buffer;
 }

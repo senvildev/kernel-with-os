@@ -4,9 +4,9 @@
 
 #include "gdt.h"
 
-// create gdt entry table
+// create the GDT
 struct gdt_entry gdt_entries[GDT_SEGMENT_LIMIT];
-
+// create a GDT pointer to load into memory
 struct gdt_pointer gdt_pointer;
 
 // function to setup singular entries in the GDT
