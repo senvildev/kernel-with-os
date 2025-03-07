@@ -22,8 +22,8 @@ isr\num:
     cld						# ensure string operations go forward
     call handle_isr\num		# call the ISR handler
     popal					# restore the general purpose registers
+    addl $4, %esp			# adjust the stack pointer to remove the error code
     sti						# resume interrupts
-    add $4, %esp			# adjust the stack pointer to remove the error code
 	iret					# return from the interrupt
 .endm						# end the macro
 

@@ -1,11 +1,16 @@
 #include "libs/kernel_log/kernel_log.h"
 #include "libs/stdout/stdout.h"
+#include "libs/conversions/conversions.h"
+
+#include <stdint.h>
 
 // code to run after each interrupt
 void after_handle(void)
 {
+	__asm__ volatile("cli");
+
 	while (1)
-		asm volatile("hlt");
+		__asm__ volatile("hlt");
 }
 
 // default handle for (potentially unknown)
@@ -109,11 +114,7 @@ void handle_isr12(void)
 }
 
 // handle for a general protection fault
-void handle_isr13(void)
-{
-	kernel_log(1, "general protection fault");
-	after_handle();
-}
+void handle_isr13(void) { kernel_log(1, "general protection fault"); }
 
 // handle for a page fault
 void handle_isr14(void)

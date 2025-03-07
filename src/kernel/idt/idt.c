@@ -52,8 +52,6 @@ void idt_load(void)
 	idt_pointer.base = (uint32_t)(uintptr_t)&idt_entries;
 	// load the IDT using assembly
 	__asm__ volatile("lidt %0" : : "m"(idt_pointer));
-	// resume interrupts
-	__asm__ volatile("sti");
 
 	kernel_log(0, "loaded the IDT and enabled interrupts");
 }
