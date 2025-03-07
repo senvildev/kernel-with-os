@@ -114,7 +114,11 @@ void handle_isr12(void)
 }
 
 // handle for a general protection fault
-void handle_isr13(void) { kernel_log(1, "general protection fault"); }
+void handle_isr13(void)
+{
+	kernel_log(1, "general protection fault");
+	after_handle();
+}
 
 // handle for a page fault
 void handle_isr14(void)
