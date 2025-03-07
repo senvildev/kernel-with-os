@@ -1,4 +1,5 @@
 bin/binary/**/*.bin
+bin/binary/**/*.elf
 bin/iso/**/*.iso
 bin/object/**/*.o
 bin/grub/**
