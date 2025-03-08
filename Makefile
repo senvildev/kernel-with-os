@@ -15,7 +15,7 @@ BIN_DIR = $(BUILD_DIR)/binary
 #SRC_BOOTSTRAP_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
 SRC_ASM = $(shell find $(SRC_DIR) -name "*.asm")
 SRC_C = $(shell find $(SRC_DIR) -name "*.c")
-SRC_LD = $(SRC_DIR)/linker/linker.ld
+SRC_LD = $(SRC_DIR)/linker.ld
 
 OBJ_ASM = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_ASM:.asm=.o))
 OBJ_C = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
