@@ -10,6 +10,7 @@
 
 #include "idt/interrupt_handlers.h"
 
+#include "pic/pic.h"
 #include "idt/idt.h"
 
 /* MOVE THIS CODE LATER
@@ -41,8 +42,13 @@ void protected_kernel_main(void)
 	kernel_log(0, "enabled and entered protected mode\n");
 
 	idt_setup();
+	print("\n");
 
+	pic_setup();
+	print("\n");
+
+	kernel_log(3, "enabling interrupts");
+	pic_enable_all_irqs();
 	__asm__ volatile("sti");
-
-	print("\nhi");
+	kernel_log(0, "enabled interrupts");
 }
