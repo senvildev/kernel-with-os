@@ -1,7 +1,7 @@
 #include "protected_mode.h"
-#include "gdt/gdt.h"
+#include "../gdt/gdt.h"
 
-#include "kernel.h"
+#include "kernel/kernel.h"
 
 #include "libs/kernel_log/kernel_log.h"
 

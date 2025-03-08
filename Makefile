@@ -6,57 +6,55 @@ ASFLAGS =
 CFLAGS = -ffreestanding -O2 -Wall -Wextra -fno-exceptions -g
 LDFLAGS = -ffreestanding -O2 -nostdlib
 
-SRC_DIR = src
-OBJ_DIR = bin/object
-BIN_DIR = bin/binary
+BUILD_DIR = build
 
-SRC_BOOTSTRAP_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
-SRC_ASM = $(shell find $(SRC_DIR)/kernel -name "*.asm")
-SRC_C = $(shell find $(SRC_DIR)/kernel -name "*.c")
+SRC_DIR = src
+OBJ_DIR = $(BUILD_DIR)/object
+BIN_DIR = $(BUILD_DIR)/binary
+
+#SRC_BOOTSTRAP_ASM = $(SRC_DIR)/bootstrap/bootstrap.asm
+SRC_ASM = $(shell find $(SRC_DIR) -name "*.asm")
+SRC_C = $(shell find $(SRC_DIR) -name "*.c")
 SRC_LD = $(SRC_DIR)/linker/linker.ld
 
-OBJ_BOOTSTRAP_ASM = $(OBJ_DIR)/bootstrap.o
-OBJ_ASM = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_ASM:.asm=.o))
-OBJ_C = $(patsubst $(SRC_DIR)/kernel/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
+OBJ_ASM = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_ASM:.asm=.o))
+OBJ_C = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
 
 TARGET = $(BIN_DIR)/os.bin
 TARGET_ELF = $(BIN_DIR)/os.elf
 
-INCLUDE = -I./src/kernel
+INCLUDE = -I./src
 
 all: $(TARGET)
 elf: $(TARGET_ELF)
 
 # build kernel files (and c code)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE)
 
-# build bootstrap (and assembly code)
-$(OBJ_DIR)/bootstrap.o: $(SRC_BOOTSTRAP_ASM) | $(OBJ_DIR)
-	$(AS) $(ASFLAGS) $< -o $@
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/kernel/%.asm | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) $< -o $@
 
-$(TARGET_ELF): $(OBJ_BOOTSTRAP_ASM) $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
+$(TARGET_ELF): $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
 	$(LD) -T $(SRC_LD) -o $@ $(LDFLAGS) $^ -lgcc
 
-$(TARGET): $(OBJ_BOOTSTRAP_ASM) $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
+$(TARGET): $(OBJ_ASM) $(OBJ_C) | $(BIN_DIR)
 	$(LD) -T $(SRC_LD) -o $@ $(LDFLAGS) $^ -lgcc
 
 clean:
 	rm -rf $(OBJ_DIR)/*
 	rm -rf $(BIN_DIR)/*
-	rm -rf bin/grub
+	rm -rf $(BUILD_DIR)/grub
+	rm -rf $(BUILD_DIR)/iso/*
 
 iso:
-	rm -rf bin/grub
-	mkdir bin/grub/boot/grub -p
-	cp bin/binary/os.bin bin/grub/boot/os.bin
-	cp config/grub.cfg bin/grub/boot/grub
-	grub-mkrescue -o bin/iso/system.iso bin/grub
+	rm -rf $(BUILD_DIR)/grub
+	mkdir $(BUILD_DIR)/grub/boot/grub -p
+	cp $(BUILD_DIR)/binary/os.bin $(BUILD_DIR)/grub/boot/os.bin
+	cp config/grub.cfg $(BUILD_DIR)/grub/boot/grub
+	grub-mkrescue -o $(BUILD_DIR)/iso/system.iso bin/grub
 
 start:
 	qemu-system-x86_64 -kernel $(TARGET)

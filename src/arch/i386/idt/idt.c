@@ -4,7 +4,7 @@
 
 #include "libs/kernel_log/kernel_log.h"
 
-#include "idt/interrupt_handlers.h"
+#include "interrupt_handlers.h"
 
 // declare the IDT variable
 struct idt_entry idt_entries[IDT_INTERRUPT_LIMIT];

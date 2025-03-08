@@ -1,4 +1,4 @@
 CompileFlags:
   Add:
     - "-working-directory=/home/senvil/Desktop/kernelos/"
-    - "-Isrc/kernel"
+    - "-Isrc"

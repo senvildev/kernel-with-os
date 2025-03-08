@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#include "pic/pic.h"
+#include "pic.h"
 
 #include "libs/kernel_log/kernel_log.h"
 

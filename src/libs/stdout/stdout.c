@@ -1,4 +1,4 @@
-#include "tty/tty.h"
+#include "drivers/tty/tty.h"
 
 #include "stdout.h"
 
