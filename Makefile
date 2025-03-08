@@ -23,7 +23,7 @@ OBJ_C = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_C:.c=.o))
 TARGET = $(BIN_DIR)/os.bin
 TARGET_ELF = $(BIN_DIR)/os.elf
 
-INCLUDE = -I./src
+INCLUDE = -Isrc -Isrc/arch/i386
 
 all: $(TARGET)
 elf: $(TARGET_ELF)

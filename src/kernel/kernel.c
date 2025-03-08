@@ -6,12 +6,12 @@
 #include "libs/kernel_log/kernel_log.h"
 #include "libs/stdout/stdout.h"
 
-#include "arch/i386/protected_mode/protected_mode.h"
+#include "protected_mode/protected_mode.h"
 
-#include "arch/i386/idt/interrupt_handlers.h"
+#include "idt/interrupt_handlers.h"
 
-#include "arch/i386/pic/pic.h"
-#include "arch/i386/idt/idt.h"
+#include "pic/pic.h"
+#include "idt/idt.h"
 
 /* MOVE THIS CODE LATER
 
