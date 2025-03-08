@@ -53,7 +53,7 @@ void idt_load(void)
 	// load the IDT using assembly
 	__asm__ volatile("lidt %0" : : "m"(idt_pointer));
 
-	kernel_log(0, "loaded the IDT and enabled interrupts");
+	kernel_log(0, "loaded the IDT");
 }
 
 // function to set the IDT up
