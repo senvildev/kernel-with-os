@@ -142,3 +142,9 @@ void pic_enable_irq(uint8_t irq);
 // straightforward function that enables
 // all the IRQ's in the PIC
 void pic_enable_all_irqs(void);
+
+// sends end of interrupt signal to the PIC
+void pic_send_eoi(uint8_t irq);
+
+void pic_disable_irq(uint8_t irq);
+void pic_disable_all_irqs(void);

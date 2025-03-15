@@ -1,5 +1,5 @@
 CompileFlags:
   Add:
-    - "-working-directory=/home/senvil/Desktop/kernelos/"
+    - "-working-directory=/home/senvil/Documents/Projects/kernel-with-os/"
     - "-Isrc"
     - "-Isrc/arch/i386"

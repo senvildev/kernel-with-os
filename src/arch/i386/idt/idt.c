@@ -26,20 +26,20 @@ void idt_set_entry(int num, uint32_t base, uint16_t selector, uint8_t flags)
 
 	// store memory address of the interrupt
 	// mask the lower 16 bits
-	idt_entry_target->base_low = base & 0xFFFF;
+	idt_entry_target->base_low = (uint16_t)(base & 0xFFFF);
 	// mask the upper 16 bits
-	idt_entry_target->base_high = (base >> 16) & 0xFFFF;
+	idt_entry_target->base_high = (uint16_t)(base >> 16);
 
 	// store which code segment to use
 	// straightforward
-	idt_entry_target->selector = selector;
+	idt_entry_target->selector = (uint16_t)selector;
 
 	// reserved, always zero, straightforward
 	idt_entry_target->always_zero = 0;
 
 	// store settings on how the interrupt has to behave
 	// straightforward
-	idt_entry_target->flags = flags;
+	idt_entry_target->flags = (uint16_t)flags;
 }
 
 // function to load the IDT using assembly
@@ -51,7 +51,7 @@ void idt_load(void)
 	// set the starting address of the IDT pointer
 	idt_pointer.base = (uint32_t)(uintptr_t)&idt_entries;
 	// load the IDT using assembly
-	__asm__ volatile("lidt %0" : : "m"(idt_pointer));
+	__asm__ volatile("lidt (%0)" : : "r"(&idt_pointer));
 
 	kernel_log(0, "loaded the IDT");
 }

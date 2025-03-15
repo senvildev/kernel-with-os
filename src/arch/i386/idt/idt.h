@@ -3,7 +3,7 @@
 #ifndef IDT_H
 #define IDT_H
 
-#define IDT_INTERRUPT_LIMIT 32
+#define IDT_INTERRUPT_LIMIT 256
 
 // structure used to create and
 // define an interrupt in the IDT

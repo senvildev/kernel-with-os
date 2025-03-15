@@ -7,14 +7,6 @@
 // function to set up the entire PIC
 void pic_setup(void)
 {
-	/* commented since it's not needed in this setup
-	// create variables for interrupt masks
-	uint8_t interrupt_mask1, interrupt_mask2;
-
-	interrupt_mask1 = inb(MASTER_PIC_DATA_PORT);
-	interrupt_mask2 = inb(SLAVE_PIC_DATA_PORT);
-	*/
-
 	// the io_wait(); repetition is required
 	// to ensure that the PIC has enough time
 	// to write data
@@ -94,7 +86,7 @@ void pic_enable_irq(uint8_t irq)
 	// get the IRQ mask byte
 	irq_mask = inb(pic_port);
 	// clear the IRQ mask (to enable it)
-	irq_mask &= ~(1 << irq_mask);
+	irq_mask &= ~(1 << irq);
 
 	// write the IRQ mask to
 	// the PIC port
@@ -109,4 +101,50 @@ void pic_enable_all_irqs(void)
 	for (uint8_t i = 0; i < 16; i++)
 		// enable the IRQ
 		pic_enable_irq(i);
+}
+
+void pic_disable_irq(uint8_t irq)
+{
+	// check just in case the passed
+	// IRQ doesn't match the limit
+	if (irq > 15) // doesn't require a below zero check
+		return;
+
+	// declare required variables
+	uint16_t pic_port; // port of the PIC
+	uint8_t irq_mask;  // mask controlling which IRQ
+					   // is enabled/disabled
+
+	// check whether the IRQ is in the master
+	// PIC or the slave PIC
+	if (irq < 8)
+		//
+		pic_port = MASTER_PIC_DATA_PORT;
+	else
+	{
+		pic_port = SLAVE_PIC_DATA_PORT;
+		irq -= 8;
+	}
+
+	// get the IRQ mask byte
+	irq_mask = inb(pic_port);
+	// clear the IRQ mask (to enable it)
+	irq_mask |= ~(1 << irq);
+
+	// write the IRQ mask to
+	// the PIC port
+	outb(pic_port, irq_mask);
+}
+
+void pic_disable_all_irqs(void)
+{
+	for (uint8_t i = 0; i < 16; i++)
+		pic_disable_irq(i);
+}
+
+void pic_send_eoi(uint8_t irq)
+{
+	outb(MASTER_PIC_COMMAND_PORT, 0x20);
+	if (irq >= 8)
+		outb(SLAVE_PIC_COMMAND_PORT, 0x20);
 }
