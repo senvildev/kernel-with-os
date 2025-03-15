@@ -28,11 +28,12 @@ INCLUDE = -Isrc -Isrc/arch/i386
 all: $(TARGET)
 elf: $(TARGET_ELF)
 
-# build kernel files (and c code)
+# build kernel c files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE)
 
+# build kernel asm files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(OBJ_DIR)
 	mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) $< -o $@
