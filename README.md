@@ -16,7 +16,7 @@ in case you use clangd (i do) use this `.clangd` configuration:
 ```
 CompileFlags:
   Add:
-    - "-working-directory=/home/senvil/Documents/Projects/kernel-with-os/"
+    - "-working-directory="/path/to/project"
     - "-Isrc"
     - "-Isrc/arch/i386"
 ```
