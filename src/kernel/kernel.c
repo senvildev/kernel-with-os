@@ -47,8 +47,8 @@ void protected_kernel_main(void)
 	pic_disable_all_irqs();
 
 	kernel_log(3, "initializing operating system");
-	initialize_keyboard();
+	initialize_system();
 
-	while (1)
+	for (;;)
 		asm("hlt");
 }

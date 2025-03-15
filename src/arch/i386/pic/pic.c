@@ -128,8 +128,8 @@ void pic_disable_irq(uint8_t irq)
 
 	// get the IRQ mask byte
 	irq_mask = inb(pic_port);
-	// clear the IRQ mask (to enable it)
-	irq_mask |= ~(1 << irq);
+	// set the IRQ mask (to disable it)
+	irq_mask |= (1 << irq);
 
 	// write the IRQ mask to
 	// the PIC port
@@ -138,6 +138,8 @@ void pic_disable_irq(uint8_t irq)
 
 void pic_disable_all_irqs(void)
 {
+	// iterates through each IRQ and
+	// disables it
 	for (uint8_t i = 0; i < 16; i++)
 		pic_disable_irq(i);
 }

@@ -22,18 +22,18 @@ extern void keyboard_handler_asm(void);
 
 void keyboard_handler(void)
 {
-	int scan_code = inb(0x64);
+	int scan_code = inb(0x60);
+	if (scan_code < CODES_PRESSED_SIZE)
+	{
+		char character = CODES_PRESSED[scan_code];
+		char character_null[2] = {character, '\0'};
+		print(character_null);
+	}
 	pic_send_eoi(1);
-	print("\ndone");
 }
 
 void initialize_keyboard(void)
 {
-	tty_clear();
-	print("\ninitializing keyboard");
 	idt_set_entry(0x21, (uint32_t)(uintptr_t)keyboard_handler_asm, 0x08, 0x8E);
-
 	pic_enable_irq(1);
-
-	print(" - initialized\n");
 }
