@@ -9,4 +9,8 @@
 #include "global/defines.h"
 
 // initialize the user level space
-void initialize_system(void) { tty_clear(); }
+void initialize_system(void)
+{
+	tty_clear();
+	print("Hello, Userspace!\n");
+}
