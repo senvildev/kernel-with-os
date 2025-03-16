@@ -30,7 +30,14 @@ extern int callbacks_next_index;
 // returns the index of where the callback
 // is stored in the array
 int keyboard_register_callback(callback_function callback);
-int keyboard_unregister_callback(int callback_id);
+
+// removes a callback from the
+// keyboard_callbacks array
+// arguments:
+//	  - callback_index	- contains the index
+//						  of the callback function
+//						  inside keyboard_callbacks
+int keyboard_unregister_callback(int callback_index);
 
 // C keyboard handler which invokes
 // all callbacks stored in keyboard_callbacks.
