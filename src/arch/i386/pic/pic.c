@@ -4,6 +4,8 @@
 
 #include "libs/kernel_log/kernel_log.h"
 
+#include "global/defines.h"
+
 // function to set up the entire PIC
 void pic_setup(void)
 {
@@ -11,7 +13,7 @@ void pic_setup(void)
 	// to ensure that the PIC has enough time
 	// to write data
 
-	kernel_log(3, "setting up the PIC");
+	kernel_log(INFO, "setting up the PIC");
 
 	// start initialization sequence
 	// sets bits for ICW1_ICW4 and ICW1_INIT
@@ -55,7 +57,7 @@ void pic_setup(void)
 	outb(MASTER_PIC_DATA_PORT, 0xFF);
 	outb(SLAVE_PIC_DATA_PORT, 0xFF);
 
-	kernel_log(0, "set up the PIC and disabled all IRQ's");
+	kernel_log(SUCCESS, "set up the PIC and disabled all IRQ's");
 }
 
 // function to enable a specific IRQ

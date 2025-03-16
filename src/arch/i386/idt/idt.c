@@ -6,6 +6,8 @@
 
 #include "interrupt_handlers.h"
 
+#include "global/defines.h"
+
 // declare the IDT variable
 struct idt_entry idt_entries[IDT_INTERRUPT_LIMIT];
 // declare the IDT pointer
@@ -17,7 +19,7 @@ void idt_set_entry(int num, uint32_t base, uint16_t selector, uint8_t flags)
 	// stop code if the number is incorrect
 	if (num < 0 || num >= IDT_INTERRUPT_LIMIT)
 	{
-		kernel_log(1, "couldn't add IDT interrupt - incorrect table size");
+		kernel_log(ERROR, "couldn't add IDT interrupt - incorrect table size");
 		return;
 	}
 
@@ -45,7 +47,7 @@ void idt_set_entry(int num, uint32_t base, uint16_t selector, uint8_t flags)
 // function to load the IDT using assembly
 void idt_load(void)
 {
-	kernel_log(3, "attempting to load the IDT");
+	kernel_log(INFO, "attempting to load the IDT");
 	// set the limit of the IDT pointer
 	idt_pointer.limit = sizeof(idt_entries) - 1;
 	// set the starting address of the IDT pointer
@@ -53,20 +55,20 @@ void idt_load(void)
 	// load the IDT using assembly
 	__asm__ volatile("lidt (%0)" : : "r"(&idt_pointer));
 
-	kernel_log(0, "loaded the IDT");
+	kernel_log(SUCCESS, "loaded the IDT");
 }
 
 // function to set the IDT up
 void idt_setup(void)
 {
-	kernel_log(3, "setting up the IDT");
+	kernel_log(INFO, "setting up the IDT");
 	// get the list of assembly ISR's and the handlers
 	isr_handler_t *handlers = get_isr_handlers();
 	for (int i = 0; i < IDT_INTERRUPT_LIMIT; i++)
 		// loop through each one and set them in the IDT
 		idt_set_entry(i, (uintptr_t)handlers[i], 0x08, 0x8E);
 
-	kernel_log(0, "set up IDT interrupts");
+	kernel_log(SUCCESS, "set up IDT interrupts");
 	// loads the IDT
 	idt_load();
 }

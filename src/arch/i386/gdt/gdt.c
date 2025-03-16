@@ -4,6 +4,8 @@
 
 #include "gdt.h"
 
+#include "global/defines.h"
+
 // create the GDT
 struct gdt_entry gdt_entries[GDT_SEGMENT_LIMIT];
 // create a GDT pointer to load into memory
@@ -44,7 +46,7 @@ void gdt_set_entry(
 // function to setup and load the GDT
 void gdt_load(void)
 {
-	kernel_log(3, "loading the GDT");
+	kernel_log(INFO, "loading the GDT");
 	// get the size of the GDT
 	gdt_pointer.limit = sizeof(gdt_entries) - 1;
 	// get the address of the GDT
@@ -52,5 +54,5 @@ void gdt_load(void)
 	// load the gdt using assembly
 	asm volatile("lgdt %0" : : "m"(gdt_pointer));
 
-	kernel_log(0, "loaded the GDT");
+	kernel_log(SUCCESS, "loaded the GDT");
 }
