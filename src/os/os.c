@@ -6,9 +6,7 @@
 
 #include "pic/pic.h"
 
-void initialize_system(void)
-{
-	tty_clear();
-	print("Hello, OS!");
-	initialize_keyboard();
-}
+#include "global/defines.h"
+
+// initialize the user level space
+void initialize_system(void) { tty_clear(); }
