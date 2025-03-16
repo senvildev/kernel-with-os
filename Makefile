@@ -55,7 +55,7 @@ iso:
 	mkdir $(BUILD_DIR)/grub/boot/grub -p
 	cp $(BUILD_DIR)/binary/os.bin $(BUILD_DIR)/grub/boot/os.bin
 	cp config/grub.cfg $(BUILD_DIR)/grub/boot/grub
-	grub-mkrescue -o $(BUILD_DIR)/iso/system.iso bin/grub
+	grub-mkrescue -o $(BUILD_DIR)/iso/system.iso $(BUILD_DIR)/grub
 
 start:
 	qemu-system-x86_64 -kernel $(TARGET)
