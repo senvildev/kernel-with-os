@@ -16,15 +16,19 @@
 #include "drivers/input/keyboard/keyboard.h"
 #include "os/os.h"
 
-// system initialization function
+#include "global/defines.h"
+
+// main kernel initialization function
 void kernel_main(void)
 {
+	// initializes the TTY
 	tty_initialize();
-
+	// enters protected mode
 	protected_mode_enter();
 
-	kernel_log(1, "couldn't start protected mode");
-
+	// halt the system in case it failed to
+	// enter protected mode
+	kernel_log(ERROR, "couldn't start protected mode");
 	for (;;)
 		asm("hlt");
 }
@@ -32,23 +36,29 @@ void kernel_main(void)
 // kernel working under protected mode
 void protected_kernel_main(void)
 {
-	kernel_log(0, "enabled and entered protected mode\n");
-
+	kernel_log(SUCCESS, "enabled and entered protected mode\n");
+	// sets up the IDT
 	idt_setup();
 	print("\n");
-
+	// sets up the PIC
 	pic_setup();
 	print("\n");
 
-	kernel_log(3, "enabling interrupts");
+	kernel_log(INFO, "enabling interrupts");
+	// enables interrupts using the sti opcode
+	// in assembly
 	__asm__ volatile("sti");
-	kernel_log(0, "enabled interrupts");
+	kernel_log(SUCCESS, "enabled interrupts");
 
+	// disables all IRQ's in the PIC
 	pic_disable_all_irqs();
 
-	kernel_log(3, "initializing operating system");
+	// initializes the user level
+	kernel_log(INFO, "initializing operating system");
 	initialize_system();
 
+	// halt the system in case it reaches
+	// this part
 	for (;;)
 		asm("hlt");
 }
