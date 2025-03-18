@@ -18,8 +18,6 @@ extern uint8_t tty_color;
 // variable storing the VGA screen buffer
 extern uint16_t *tty_buffer;
 
-#endif
-
 // enumerator of colors
 // names say enough
 enum VGA_COLORS
@@ -39,7 +37,9 @@ enum VGA_COLORS
 	VGA_COLOR_LIGHT_RED = 12,
 	VGA_COLOR_LIGHT_MAGENTA = 13,
 	VGA_COLOR_LIGHT_BROWN = 14,
-	VGA_COLOR_WHITE = 15
+	VGA_COLOR_WHITE = 15,
+
+	VGA_COLOR_DEFAULT = 255
 };
 
 // create the VGA color data
@@ -60,6 +60,8 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 {
 	return (uint16_t)character | (uint16_t)color << 8;
 }
+
+#endif
 
 // initialize the TTY with a blank screen
 void tty_initialize(void);
