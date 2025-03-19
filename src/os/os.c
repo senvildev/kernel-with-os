@@ -16,13 +16,13 @@ void initialize_system(void)
 	tty_clear();
 	print("Hello, Userspace!\n");
 	// initializes a custom text based UI
-	ttui_initialize(VGA_COLOR_WHITE, VGA_COLOR_CYAN);
+	ttui_initialize(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	// creates a sidebar
 	// 10 entries wide
 	// empty separator (and connecting separator)
 	// black foreground
 	// dark gray background
-	ttui_create_sidebar(10, ' ', ' ', VGA_COLOR_BLACK, VGA_COLOR_DARK_GRAY);
+	ttui_create_sidebar(10, '|', '+', VGA_COLOR_DEFAULT, VGA_COLOR_DEFAULT);
 	// creates a title bar
 	// contains the specified text
 	// empty separator
@@ -31,14 +31,14 @@ void initialize_system(void)
 	// light gray background
 	ttui_create_title(
 		"Hallo Welt! Hello World! Hola Mundo!",
-		' ',
-		3,
-		VGA_COLOR_BLACK,
-		VGA_COLOR_LIGHT_GRAY);
+		'-',
+		2,
+		VGA_COLOR_DEFAULT,
+		VGA_COLOR_DEFAULT);
 	// entries to be created in the main block
 	ttui_write_to_main_block(
-		"hello guys, this is my first operating system and kernel and this "
-		"took me ~1 month and 1000 lines of code");
-	ttui_write_to_main_block("i wrote this myself");
+		"hello, this is my first operating system and kernel");
+	ttui_write_to_main_block("i made this myself from scratch");
+	ttui_write_to_main_block("this took me ~1 month and 1000 lines of code");
 	ttui_write_to_main_block("this is my best project so far");
 }
