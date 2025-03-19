@@ -71,7 +71,7 @@ void ttui_create_title(
 	enum VGA_COLORS background)
 {
 	// checks if the height is correct
-	if (height <= 0)
+	if (height <= 1)
 		return; // stops the function if it isn't
 
 	// chooses between default or passed color
@@ -89,7 +89,7 @@ void ttui_create_title(
 		tty_row = row;
 		// goes through each column
 		// (except for what the sidebar is occupying)
-		for (int column = SIDEBAR_WIDTH + 1; column < VGA_WIDTH; column++)
+		for (int column = SIDEBAR_WIDTH; column < VGA_WIDTH; column++)
 		{
 			// sets the TTY column to the
 			// iterating column variable
@@ -122,7 +122,7 @@ void ttui_create_title(
 	// lowest place on the height
 	tty_row = height - 1;
 	// iterate through each column
-	for (int column = SIDEBAR_WIDTH + 1; column < VGA_WIDTH; column++)
+	for (int column = SIDEBAR_WIDTH; column < VGA_WIDTH; column++)
 	{
 		// set the TTY column cursor to
 		// the current iterated column
@@ -140,6 +140,7 @@ void ttui_create_title(
 	reset_tty_color();
 }
 
+// creates a sidebar
 void ttui_create_sidebar(
 	int width,
 	char separator,
@@ -167,8 +168,13 @@ void ttui_create_sidebar(
 			// sets the TTY column to the
 			// currently iterated column
 			tty_column = column;
-			// sets an empty character
-			tty_insert_entry(' ');
+			// sets a separator character if it is
+			// on the end of the sidebar
+			// otherwise sets an empty character
+			if (column == SIDEBAR_WIDTH - 1)
+				tty_insert_entry(separator);
+			else
+				tty_insert_entry(' ');
 		}
 		// sets the TTY row to the
 		// currently iterating row
