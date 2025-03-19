@@ -1,6 +1,20 @@
 #include "global/defines.h"
 #include "drivers/tty/tty.h"
 
+#ifndef TTUI_H
+#define TTUI_H
+
+// variables holding UI
+// manipulation data
+extern int SIDEBAR_WIDTH;
+extern int MAIN_BLOCK_NEXT_ELEMENT_ROW;
+
+// variables holding the default colors
+extern enum VGA_COLORS default_color_foreground;
+extern enum VGA_COLORS default_color_background;
+
+#endif
+
 // writes text to the main block
 // and creates an empty space below it
 // arguments:
