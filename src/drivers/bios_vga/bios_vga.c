@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "tty.h"
+#include "bios_vga.h"
 #include "libs/string/string.h"
 
 size_t tty_row = 0;

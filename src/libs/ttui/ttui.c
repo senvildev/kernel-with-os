@@ -1,4 +1,4 @@
-#include "drivers/tty/tty.h"
+#include "drivers/bios_vga/bios_vga.h"
 #include "libs/string/string.h"
 
 // set UI manipulation
@@ -8,8 +8,8 @@ int MAIN_BLOCK_NEXT_ELEMENT_ROW = 0;
 
 // set default color variables
 // to the default values
-enum VGA_COLORS default_color_foreground = VGA_COLOR_LIGHT_GRAY;
-enum VGA_COLORS default_color_background = VGA_COLOR_BLACK;
+enum VGA_COLOR default_color_foreground = VGA_COLOR_LIGHT_GRAY;
+enum VGA_COLOR default_color_background = VGA_COLOR_BLACK;
 
 // resets the TTY color to defaults
 // in case it has been changed
@@ -21,7 +21,7 @@ void reset_tty_color(void)
 
 // selects between color1 and color2
 // returns color2 if the color1 is the default color
-enum VGA_COLORS select_color(enum VGA_COLORS color1, enum VGA_COLORS color2)
+enum VGA_COLOR select_color(enum VGA_COLOR color1, enum VGA_COLOR color2)
 {
 	// does a check and returns based on the data
 	return (color1 == VGA_COLOR_DEFAULT) ? color2 : color1;
@@ -67,8 +67,8 @@ void ttui_create_title(
 	char *text,
 	char separator,
 	int height,
-	enum VGA_COLORS foreground,
-	enum VGA_COLORS background)
+	enum VGA_COLOR foreground,
+	enum VGA_COLOR background)
 {
 	// checks if the height is correct
 	if (height <= 1)
@@ -145,8 +145,8 @@ void ttui_create_sidebar(
 	int width,
 	char separator,
 	char connected_separator,
-	enum VGA_COLORS foreground,
-	enum VGA_COLORS background)
+	enum VGA_COLOR foreground,
+	enum VGA_COLOR background)
 {
 	// sets the sidebar width to the
 	// passed width parameter
@@ -194,7 +194,7 @@ void ttui_create_sidebar(
 }
 
 // initializes the TTUI library
-void ttui_initialize(enum VGA_COLORS foreground, enum VGA_COLORS background)
+void ttui_initialize(enum VGA_COLOR foreground, enum VGA_COLOR background)
 {
 	// checks for new default passed colors
 	if (foreground != VGA_COLOR_DEFAULT)

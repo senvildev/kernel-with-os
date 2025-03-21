@@ -1,9 +1,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-// TTY macro
-#ifndef TTY_H
-#define TTY_H
+// BIOS VGA macro
+#ifndef BIOS_VGA_H
+#define BIOS_VGA_H
 
 #define VGA_WIDTH 80  // width of the screen
 #define VGA_HEIGHT 25 // height of the screen
@@ -12,15 +12,15 @@
 extern size_t tty_column; // x coordinate
 extern size_t tty_row;	  // u coordinate
 
-// variable storing TTY VGA color
+// variable storing BIOS VGA color
 extern uint8_t tty_color;
 
-// variable storing the VGA screen buffer
+// variable storing the BIOS VGA screen buffer
 extern uint16_t *tty_buffer;
 
 // enumerator of colors
 // names say enough
-enum VGA_COLORS
+enum VGA_COLOR
 {
 	VGA_COLOR_BLACK = 0,
 	VGA_COLOR_BLUE = 1,
@@ -47,7 +47,7 @@ enum VGA_COLORS
 //	  - foreground - text color
 //	  - background - background color
 static inline uint8_t
-vga_entry_color(enum VGA_COLORS foreground, enum VGA_COLORS background)
+vga_entry_color(enum VGA_COLOR foreground, enum VGA_COLOR background)
 {
 	return foreground | background << 4;
 }
@@ -63,31 +63,31 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 
 #endif
 
-// initialize the TTY with a blank screen
+// initialize the BIOS VGA with a blank screen
 void tty_initialize(void);
 
-// clear the entire TTY
+// clear the entire BIOS VGA
 void tty_clear(void);
 
-// insert a character at a specific coordinate on the TTY
+// insert a character at a specific coordinate on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
-//	  - x - TTY column (x coordinate)
-//	  - y - TTY row (y coordinate)
+//	  - x - BIOS VGA column (x coordinate)
+//	  - y - BIOS VGA row (y coordinate)
 void tty_insert_entry_at(const char character, size_t x, size_t y);
 
-// insert a character on the TTY
+// insert a character on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
 void tty_insert_entry(const char character);
 
-// write a set of characters to the TTY (loop)
+// write a set of characters to the BIOS VGA (loop)
 // arguments:
 //	  - *data - set of characters to write
 //	  - size - length of the set
 void tty_write(const char *data, size_t size);
 
-// write a set of characters to the TTY (main)
+// write a set of characters to the BIOS VGA (main)
 // arguments:
 //	  - *data - set of characters to write
 void tty_write_string(const char *data);

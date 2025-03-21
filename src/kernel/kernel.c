@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "drivers/tty/tty.h"
+#include "drivers/bios_vga/bios_vga.h"
 
 #include "libs/kernel_log/kernel_log.h"
 #include "libs/stdout/stdout.h"
@@ -52,6 +52,10 @@ void protected_kernel_main(void)
 
 	// disables all IRQ's in the PIC
 	pic_disable_all_irqs();
+
+	// code to disable the cursor
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, 0x20);
 
 	// initializes the user level
 	kernel_log(INFO, "initializing operating system");

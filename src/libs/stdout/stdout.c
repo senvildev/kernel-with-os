@@ -1,4 +1,4 @@
-#include "drivers/tty/tty.h"
+#include "drivers/bios_vga/bios_vga.h"
 
 #include "stdout.h"
 

@@ -1,5 +1,5 @@
 #include "global/defines.h"
-#include "drivers/tty/tty.h"
+#include "drivers/bios_vga/bios_vga.h"
 
 #ifndef TTUI_H
 #define TTUI_H
@@ -10,8 +10,8 @@ extern int SIDEBAR_WIDTH;
 extern int MAIN_BLOCK_NEXT_ELEMENT_ROW;
 
 // variables holding the default colors
-extern enum VGA_COLORS default_color_foreground;
-extern enum VGA_COLORS default_color_background;
+extern enum VGA_COLOR default_color_foreground;
+extern enum VGA_COLOR default_color_background;
 
 #endif
 
@@ -38,8 +38,8 @@ void ttui_create_title(
 	char *text,
 	char separator,
 	int height,
-	enum VGA_COLORS foreground,
-	enum VGA_COLORS background);
+	enum VGA_COLOR foreground,
+	enum VGA_COLOR background);
 
 // creates a sidebar on the left
 // arguments:
@@ -58,8 +58,8 @@ void ttui_create_sidebar(
 	int width,
 	char separator,
 	char connected_separator,
-	enum VGA_COLORS foreground,
-	enum VGA_COLORS background);
+	enum VGA_COLOR foreground,
+	enum VGA_COLOR background);
 
 // initializes the TTUI interface
 // arguments:
@@ -71,4 +71,4 @@ void ttui_create_sidebar(
 //	- foreground - VGA_COLOR_LIGHT_GRAY
 //	- background - VGA_COLOR_BLACK
 // if they received a VGA_COLOR_DEFAULT value
-void ttui_initialize(enum VGA_COLORS foreground, enum VGA_COLORS background);
+void ttui_initialize(enum VGA_COLOR foreground, enum VGA_COLOR background);
