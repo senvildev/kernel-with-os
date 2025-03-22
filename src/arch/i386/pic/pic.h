@@ -1,7 +1,7 @@
-#include <stdint.h>
-
 #ifndef PIC_H
 #define PIC_H
+
+#include <stdint.h>
 
 // define ports for the PIC
 //	  - intel 8259 PIC chips come in a
@@ -93,8 +93,6 @@
 //					  until the current one is complete
 #define ICW4_SFNM 0x10
 
-#endif
-
 // function that creates a delay between
 // input/output operations in the PIC
 //	  it writes 0 to port 0x80 using the outb
@@ -148,3 +146,5 @@ void pic_send_eoi(uint8_t irq);
 
 void pic_disable_irq(uint8_t irq);
 void pic_disable_all_irqs(void);
+
+#endif

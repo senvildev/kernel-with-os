@@ -1,7 +1,7 @@
-#include <stdint.h>
-
 #ifndef INTERRUPT_HANDLERS_H
 #define INTERRUPT_HANDLERS_H
+
+#include <stdint.h>
 
 // defining an ISR handler type for a function below
 typedef void (*isr_handler_t)(void);

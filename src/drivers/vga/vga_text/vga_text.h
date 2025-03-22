@@ -1,9 +1,9 @@
+// VGA text macro
+#ifndef VGA_TEXT_H
+#define VGA_TEXT_H
+
 #include <stddef.h>
 #include <stdint.h>
-
-// BIOS VGA macro
-#ifndef vga_text_H
-#define vga_text_H
 
 #define VGA_WIDTH 80  // width of the screen
 #define VGA_HEIGHT 25 // height of the screen
@@ -12,10 +12,10 @@
 extern size_t vga_text_column; // x coordinate
 extern size_t vga_text_row;	   // u coordinate
 
-// variable storing BIOS VGA color
+// variable storing VGA text color
 extern uint8_t vga_text_color;
 
-// variable storing the BIOS VGA screen buffer
+// variable storing the VGA text screen buffer
 extern uint16_t *vga_text_buffer;
 
 // enumerator of colors
@@ -61,33 +61,33 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 	return (uint16_t)character | (uint16_t)color << 8;
 }
 
-#endif
-
-// initialize the BIOS VGA with a blank screen
+// initialize the VGA text with a blank screen
 void vga_text_initialize(void);
 
-// clear the entire BIOS VGA
+// clear the entire VGA text
 void vga_text_clear(void);
 
-// insert a character at a specific coordinate on the BIOS VGA
+// insert a character at a specific coordinate on the VGA text
 // arguments:
 //	  - character - the character to insert
-//	  - x - BIOS VGA column (x coordinate)
-//	  - y - BIOS VGA row (y coordinate)
+//	  - x - VGA text column (x coordinate)
+//	  - y - VGA text row (y coordinate)
 void vga_text_insert_entry_at(const char character, size_t x, size_t y);
 
-// insert a character on the BIOS VGA
+// insert a character on the VGA text
 // arguments:
 //	  - character - the character to insert
 void vga_text_insert_entry(const char character);
 
-// write a set of characters to the BIOS VGA (loop)
+// write a set of characters to the VGA text (loop)
 // arguments:
 //	  - *data - set of characters to write
 //	  - size - length of the set
 void vga_text_write(const char *data, size_t size);
 
-// write a set of characters to the BIOS VGA (main)
+// write a set of characters to the VGA text (main)
 // arguments:
 //	  - *data - set of characters to write
 void vga_text_write_string(const char *data);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef STRING_H
+#define STRING_H
+
 #include <stddef.h>
 
 // concatenate 2 strings together
@@ -11,3 +14,5 @@ char *strcat(char *destination_text, const char *text_to_add);
 // arguments:
 //	  - str - string/set of characters
 size_t strlen(const char *str);
+
+#endif

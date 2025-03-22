@@ -1,3 +1,6 @@
+#ifndef STDOUT_H
+#define STDOUT_H
+
 // print a string to the screen
 // arguments:
 //	  - message - string to print
@@ -6,3 +9,5 @@
 // since it supports more "fancy" formatting
 // supported: \n
 void print(char *message);
+
+#endif

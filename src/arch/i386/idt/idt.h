@@ -1,7 +1,7 @@
-#include <stdint.h>
-
 #ifndef IDT_H
 #define IDT_H
+
+#include <stdint.h>
 
 #define IDT_INTERRUPT_LIMIT 256
 
@@ -32,8 +32,6 @@ extern struct idt_entry idt_entries[IDT_INTERRUPT_LIMIT];
 // points to the IDT
 extern struct idt_pointer idt_pointer;
 
-#endif
-
 // function that sets an interrupt in the IDT
 // arguments:
 //	  - num		  - which interrupt it is in the code
@@ -55,3 +53,5 @@ void idt_load(void);
 // function that sets up all interrupts in the IDT
 // and loads it in the end
 void idt_setup(void);
+
+#endif

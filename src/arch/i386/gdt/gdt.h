@@ -1,5 +1,8 @@
 #include <stdint.h>
 
+#ifndef GDT_H
+#define GDT_H
+
 // GDT segment entry structure
 struct gdt_entry
 {
@@ -20,9 +23,6 @@ struct gdt_pointer
 	uint32_t base;		   // address of the GDT
 } __attribute__((packed)); // disable margins between variables
 
-#ifndef GDT_H
-#define GDT_H
-
 #define GDT_SEGMENT_LIMIT 5
 
 // GDT table
@@ -30,8 +30,6 @@ extern struct gdt_entry gdt_entries[GDT_SEGMENT_LIMIT];
 
 // pointer to the GDT
 extern struct gdt_pointer gdt_pointer;
-
-#endif
 
 // sets up an entry
 // arguments:
@@ -45,3 +43,5 @@ void gdt_set_entry(
 
 // function that sets up and loads the GDT using assembly
 void gdt_load(void);
+
+#endif
