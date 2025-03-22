@@ -1,4 +1,4 @@
-#include "drivers/bios_vga/bios_vga.h"
+#include "drivers/vga/vga_text/vga_text.h"
 
 #include "libs/stdout/stdout.h"
 
@@ -13,7 +13,7 @@
 // initialize the user level space
 void initialize_system(void)
 {
-	bios_vga_clear();
+	vga_text_clear();
 	print("Hello, Userspace!\n");
 	// initializes a custom text based UI
 	ttui_initialize(VGA_COLOR_GREEN, VGA_COLOR_BLACK);

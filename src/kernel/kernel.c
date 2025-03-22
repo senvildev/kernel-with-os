@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "drivers/bios_vga/bios_vga.h"
+#include "drivers/vga/vga_text/vga_text.h"
 
 #include "libs/kernel_log/kernel_log.h"
 #include "libs/stdout/stdout.h"
@@ -22,14 +22,14 @@
 void kernel_main(void)
 {
 	// initializes the BIOS VGA
-	bios_vga_initialize();
+	vga_text_initialize();
 	// enters protected mode
 	protected_mode_enter();
 
 	// halt the system in case it failed to
 	// enter protected mode
-	bios_vga_write_string("error: couldn't start protected mode");
-	bios_vga_write_string("halting system.");
+	vga_text_write_string("error: couldn't start protected mode");
+	vga_text_write_string("halting system.");
 	for (;;)
 		asm("hlt");
 }
@@ -37,7 +37,7 @@ void kernel_main(void)
 // kernel working under protected mode
 void protected_kernel_main(void)
 {
-	bios_vga_clear();
+	vga_text_clear();
 	kernel_log(SUCCESS, "enabled and entered protected mode\n");
 	// sets up the IDT
 	idt_setup();

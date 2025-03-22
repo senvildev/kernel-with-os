@@ -2,21 +2,21 @@
 #include <stdint.h>
 
 // BIOS VGA macro
-#ifndef BIOS_VGA_H
-#define BIOS_VGA_H
+#ifndef vga_text_H
+#define vga_text_H
 
 #define VGA_WIDTH 80  // width of the screen
 #define VGA_HEIGHT 25 // height of the screen
 
 // coordinate variables
-extern size_t bios_vga_column; // x coordinate
-extern size_t bios_vga_row;	   // u coordinate
+extern size_t vga_text_column; // x coordinate
+extern size_t vga_text_row;	   // u coordinate
 
 // variable storing BIOS VGA color
-extern uint8_t bios_vga_color;
+extern uint8_t vga_text_color;
 
 // variable storing the BIOS VGA screen buffer
-extern uint16_t *bios_vga_buffer;
+extern uint16_t *vga_text_buffer;
 
 // enumerator of colors
 // names say enough
@@ -64,30 +64,30 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 #endif
 
 // initialize the BIOS VGA with a blank screen
-void bios_vga_initialize(void);
+void vga_text_initialize(void);
 
 // clear the entire BIOS VGA
-void bios_vga_clear(void);
+void vga_text_clear(void);
 
 // insert a character at a specific coordinate on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
 //	  - x - BIOS VGA column (x coordinate)
 //	  - y - BIOS VGA row (y coordinate)
-void bios_vga_insert_entry_at(const char character, size_t x, size_t y);
+void vga_text_insert_entry_at(const char character, size_t x, size_t y);
 
 // insert a character on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
-void bios_vga_insert_entry(const char character);
+void vga_text_insert_entry(const char character);
 
 // write a set of characters to the BIOS VGA (loop)
 // arguments:
 //	  - *data - set of characters to write
 //	  - size - length of the set
-void bios_vga_write(const char *data, size_t size);
+void vga_text_write(const char *data, size_t size);
 
 // write a set of characters to the BIOS VGA (main)
 // arguments:
 //	  - *data - set of characters to write
-void bios_vga_write_string(const char *data);
+void vga_text_write_string(const char *data);

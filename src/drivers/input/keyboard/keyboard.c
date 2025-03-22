@@ -6,7 +6,7 @@
 #include "pic/pic.h"
 #include "idt/idt.h"
 
-#include "drivers/bios_vga/bios_vga.h"
+#include "drivers/vga/vga_text/vga_text.h"
 
 #include "libs/stdout/stdout.h"
 

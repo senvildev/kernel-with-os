@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#include "drivers/bios_vga/bios_vga.h"
+#include "drivers/vga/vga_text/vga_text.h"
 
 #include "gdt.h"
 
@@ -18,7 +18,7 @@ void gdt_set_entry(
 	// stop code if the number is incorrect
 	if (num < 0 || num >= GDT_SEGMENT_LIMIT)
 	{
-		bios_vga_write_string(
+		vga_text_write_string(
 			"error: couldn't add GDT segment - incorrect table size");
 		return;
 	}
@@ -47,7 +47,7 @@ void gdt_set_entry(
 // function to setup and load the GDT
 void gdt_load(void)
 {
-	bios_vga_write_string("info: loading the GDT");
+	vga_text_write_string("info: loading the GDT");
 	// get the size of the GDT
 	gdt_pointer.limit = sizeof(gdt_entries) - 1;
 	// get the address of the GDT
@@ -55,5 +55,5 @@ void gdt_load(void)
 	// load the gdt using assembly
 	asm volatile("lgdt %0" : : "m"(gdt_pointer));
 
-	bios_vga_write_string("success: loaded the GDT");
+	vga_text_write_string("success: loaded the GDT");
 }

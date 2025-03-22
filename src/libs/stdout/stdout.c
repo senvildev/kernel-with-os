@@ -1,4 +1,4 @@
-#include "drivers/bios_vga/bios_vga.h"
+#include "drivers/vga/vga_text/vga_text.h"
 
 #include "stdout.h"
 
@@ -18,11 +18,11 @@ void print(char *message)
 		if (character == '\n')
 		{
 			// do a newline
-			bios_vga_row++;
-			bios_vga_column = 0;
+			vga_text_row++;
+			vga_text_column = 0;
 		}
 		else // otherwise print the character to the screen
-			bios_vga_insert_entry(message[i]);
+			vga_text_insert_entry(message[i]);
 		// iterate through the loop further
 		i++;
 	}
