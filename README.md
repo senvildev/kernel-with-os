@@ -20,3 +20,9 @@ CompileFlags:
     - "-Isrc"
     - "-Isrc/arch/i386"
 ```
+
+# system info
+
+## src/libs/
+
+this directory is dedicated for libraries to be used inside protected mode
