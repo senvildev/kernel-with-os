@@ -1,7 +1,5 @@
 #include "libs/kernel_log/kernel_log.h"
 
-#include <stdint.h>
-
 #include "global/defines.h"
 
 // code to run after each interrupt
