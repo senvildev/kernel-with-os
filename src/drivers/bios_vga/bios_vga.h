@@ -9,14 +9,14 @@
 #define VGA_HEIGHT 25 // height of the screen
 
 // coordinate variables
-extern size_t tty_column; // x coordinate
-extern size_t tty_row;	  // u coordinate
+extern size_t bios_vga_column; // x coordinate
+extern size_t bios_vga_row;	   // u coordinate
 
 // variable storing BIOS VGA color
-extern uint8_t tty_color;
+extern uint8_t bios_vga_color;
 
 // variable storing the BIOS VGA screen buffer
-extern uint16_t *tty_buffer;
+extern uint16_t *bios_vga_buffer;
 
 // enumerator of colors
 // names say enough
@@ -53,7 +53,7 @@ vga_entry_color(enum VGA_COLOR foreground, enum VGA_COLOR background)
 }
 
 // returns data for a character with a color on the screen
-// arguments:
+// arguments
 //	  - character - the sign to place
 //	  - color - color (from vga_entry_color)
 static inline uint16_t vga_entry(unsigned char character, uint8_t color)
@@ -64,30 +64,30 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 #endif
 
 // initialize the BIOS VGA with a blank screen
-void tty_initialize(void);
+void bios_vga_initialize(void);
 
 // clear the entire BIOS VGA
-void tty_clear(void);
+void bios_vga_clear(void);
 
 // insert a character at a specific coordinate on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
 //	  - x - BIOS VGA column (x coordinate)
 //	  - y - BIOS VGA row (y coordinate)
-void tty_insert_entry_at(const char character, size_t x, size_t y);
+void bios_vga_insert_entry_at(const char character, size_t x, size_t y);
 
 // insert a character on the BIOS VGA
 // arguments:
 //	  - character - the character to insert
-void tty_insert_entry(const char character);
+void bios_vga_insert_entry(const char character);
 
 // write a set of characters to the BIOS VGA (loop)
 // arguments:
 //	  - *data - set of characters to write
 //	  - size - length of the set
-void tty_write(const char *data, size_t size);
+void bios_vga_write(const char *data, size_t size);
 
 // write a set of characters to the BIOS VGA (main)
 // arguments:
 //	  - *data - set of characters to write
-void tty_write_string(const char *data);
+void bios_vga_write_string(const char *data);

@@ -4,88 +4,91 @@
 #include "bios_vga.h"
 #include "libs/string/string.h"
 
-size_t tty_row = 0;
-size_t tty_column = 0;
+size_t bios_vga_row = 0;
+size_t bios_vga_column = 0;
 
-uint8_t tty_color;
-uint16_t *tty_buffer = (uint16_t *)0xb8000;
+uint8_t bios_vga_color;
+uint16_t *bios_vga_buffer = (uint16_t *)0xb8000;
 
-// initialize the TTY
-void tty_initialize(void)
+// initialize the bios_vga
+void bios_vga_initialize(void)
 {
 	// set the row and column to 0 (start on upper left corner)
-	tty_row = 0;
-	tty_column = 0;
+	bios_vga_row = 0;
+	bios_vga_column = 0;
 	// set its color to light gray text on a black background
-	tty_color = vga_entry_color(VGA_COLOR_LIGHT_GRAY, VGA_COLOR_BLACK);
+	bios_vga_color = vga_entry_color(VGA_COLOR_LIGHT_GRAY, VGA_COLOR_BLACK);
 	// loop through all the screen coordinates
 	for (size_t y = 0; y < VGA_HEIGHT; y++)
 		for (size_t x = 0; x < VGA_WIDTH; x++)
 		{
-			// get the index of the tty buffer
+			// get the index of the bios_vga buffer
 			const size_t index = y * VGA_WIDTH + x;
 			// set it to an empty character with the above color
-			tty_buffer[index] = vga_entry(' ', tty_color);
+			bios_vga_buffer[index] = vga_entry(' ', bios_vga_color);
 		}
 }
 
-// clear the entire TTY
-void tty_clear(void)
+// clear the entire bios_vga
+void bios_vga_clear(void)
 {
 	// start from the upper left corner
-	tty_row = 0;
-	tty_column = 0;
+	bios_vga_row = 0;
+	bios_vga_column = 0;
 	// loop through all the coordinates
 	for (size_t y = 0; y < VGA_HEIGHT; y++)
 		for (size_t x = 0; x < VGA_WIDTH; x++)
 		{
-			// get the index of the TTY buffer
+			// get the index of the bios_vga buffer
 			const size_t index = y * VGA_WIDTH + x;
 			// set it to an empty character with the color
-			tty_buffer[index] = vga_entry(' ', tty_color);
+			bios_vga_buffer[index] = vga_entry(' ', bios_vga_color);
 		}
 }
 
-// insert a character on a specific coordinate on the TTY
-void tty_insert_entry_at(const char character, size_t x, size_t y)
+// insert a character on a specific coordinate on the bios_vga
+void bios_vga_insert_entry_at(const char character, size_t x, size_t y)
 {
-	// get the index on the TTY
+	// get the index on the bios_vga
 	const size_t index = y * VGA_WIDTH + x;
 	// insert the character to the buffer
-	tty_buffer[index] = vga_entry(character, tty_color);
+	bios_vga_buffer[index] = vga_entry(character, bios_vga_color);
 }
 
-// insert a character on the TTY
-void tty_insert_entry(const char character)
+// insert a character on the bios_vga
+void bios_vga_insert_entry(const char character)
 {
 	// insert it on the current X and Y coordinate
-	tty_insert_entry_at(character, tty_column, tty_row);
+	bios_vga_insert_entry_at(character, bios_vga_column, bios_vga_row);
 	// add +1 to the X coordinate
 	// check the X coordinate surpasses the width
-	if (++tty_column == VGA_WIDTH)
+	if (++bios_vga_column == VGA_WIDTH)
 	{
 		// go back to the 0 X coordinate
-		tty_column = 0;
+		bios_vga_column = 0;
 		// add +1 to the Y coordinate
-		if (++tty_row == VGA_HEIGHT)
+		if (++bios_vga_row == VGA_HEIGHT)
 			// go back to the 0 Y coordinate
-			tty_row = 0;
+			bios_vga_row = 0;
 	}
 }
 
-// write a set of characters to the TTY (loop)
-void tty_write(const char *data, size_t size)
+// write a set of characters to the bios_vga (loop)
+void bios_vga_write(const char *data, size_t size)
 {
 	// for the entire length of the set of characters
 	for (size_t i = 0; i < size; i++)
 		// insert the character
-		tty_insert_entry(data[i]);
+		bios_vga_insert_entry(data[i]);
 }
 
 // write a set of characters (main)
-void tty_write_string(const char *data)
+void bios_vga_write_string(const char *data)
 {
 	// get the length of the passed set
 	// pass the set to the function below
-	tty_write(data, strlen(data));
+	bios_vga_write(data, strlen(data));
+	// create a newline
+	bios_vga_row++;
+	bios_vga_column = 0;
 }
