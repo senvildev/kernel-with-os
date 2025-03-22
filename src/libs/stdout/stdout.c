@@ -18,11 +18,11 @@ void print(char *message)
 		if (character == '\n')
 		{
 			// do a newline
-			tty_row++;
-			tty_column = 0;
+			bios_vga_row++;
+			bios_vga_column = 0;
 		}
 		else // otherwise print the character to the screen
-			tty_insert_entry(message[i]);
+			bios_vga_insert_entry(message[i]);
 		// iterate through the loop further
 		i++;
 	}
