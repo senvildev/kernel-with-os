@@ -21,14 +21,15 @@
 // main kernel initialization function
 void kernel_main(void)
 {
-	// initializes the TTY
-	tty_initialize();
+	// initializes the BIOS VGA
+	bios_vga_initialize();
 	// enters protected mode
 	protected_mode_enter();
 
 	// halt the system in case it failed to
 	// enter protected mode
-	kernel_log(ERROR, "couldn't start protected mode");
+	bios_vga_write_string("error: couldn't start protected mode");
+	bios_vga_write_string("halting system.");
 	for (;;)
 		asm("hlt");
 }
@@ -36,6 +37,7 @@ void kernel_main(void)
 // kernel working under protected mode
 void protected_kernel_main(void)
 {
+	bios_vga_clear();
 	kernel_log(SUCCESS, "enabled and entered protected mode\n");
 	// sets up the IDT
 	idt_setup();
@@ -58,8 +60,9 @@ void protected_kernel_main(void)
 	outb(0x3D5, 0x20);
 
 	// initializes the user level
-	kernel_log(INFO, "initializing operating system");
-	initialize_system();
+	// commented out due to debug purposes
+	// kernel_log(INFO, "initializing operating system");
+	// initialize_system();
 
 	// halt the system in case it reaches
 	// this part
