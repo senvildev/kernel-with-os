@@ -11,11 +11,11 @@ int MAIN_BLOCK_NEXT_ELEMENT_ROW = 0;
 enum VGA_COLOR default_color_foreground = VGA_COLOR_LIGHT_GRAY;
 enum VGA_COLOR default_color_background = VGA_COLOR_BLACK;
 
-// resets the TTY color to defaults
+// resets the BIOS VGA color to defaults
 // in case it has been changed
-void reset_tty_color(void)
+void reset_bios_vga_color(void)
 {
-	tty_color =
+	bios_vga_color =
 		vga_entry_color(default_color_foreground, default_color_background);
 }
 
@@ -30,36 +30,36 @@ enum VGA_COLOR select_color(enum VGA_COLOR color1, enum VGA_COLOR color2)
 // writes text to the main block
 void ttui_write_to_main_block(char *text)
 {
-	// sets the TTY row on the
+	// sets the BIOS VGA row on the
 	// next main block element
-	tty_row = MAIN_BLOCK_NEXT_ELEMENT_ROW;
-	// sets the TTY column on the end of
+	bios_vga_row = MAIN_BLOCK_NEXT_ELEMENT_ROW;
+	// sets the BIOS VGA column on the end of
 	// the sidebar + 1 space margin
-	tty_column = SIDEBAR_WIDTH + 2;
+	bios_vga_column = SIDEBAR_WIDTH + 2;
 	// iterates through each character
 	for (int i = 0; i < strlen(text); i++)
 	{
 		// gets the single character
 		const char character = text[i];
 		// if the column is on the end - 1 space
-		if (tty_column >= VGA_WIDTH - 1)
+		if (bios_vga_column >= VGA_WIDTH - 1)
 		{
-			// sets the TTY column on the
+			// sets the BIOS VGA column on the
 			// end of the sidebar + 1 margin
-			tty_column = SIDEBAR_WIDTH + 2;
+			bios_vga_column = SIDEBAR_WIDTH + 2;
 			// goes to the next row
-			tty_row++;
+			bios_vga_row++;
 		}
 		// inserts the character
-		tty_insert_entry(character);
+		bios_vga_insert_entry(character);
 	}
 	// sets the next row for another antry as:
 	// 2 places lower, so current row + 1 margin
-	MAIN_BLOCK_NEXT_ELEMENT_ROW = tty_row + 2;
+	MAIN_BLOCK_NEXT_ELEMENT_ROW = bios_vga_row + 2;
 
 	// resets the default color of the
 	// cursor
-	reset_tty_color();
+	reset_bios_vga_color();
 }
 
 // creates a titlebar
@@ -78,57 +78,57 @@ void ttui_create_title(
 	// based on the passed arguments
 	foreground = select_color(foreground, default_color_foreground);
 	background = select_color(background, default_color_background);
-	// sets the colors on the TTY
-	tty_color = vga_entry_color(foreground, background);
+	// sets the colors on the BIOS VGA
+	bios_vga_color = vga_entry_color(foreground, background);
 
 	// goes through each row of the height
 	for (int row = 0; row < height; row++)
 	{
-		// sets the current TTY row to the
+		// sets the current BIOS VGA row to the
 		// iterating row variable
-		tty_row = row;
+		bios_vga_row = row;
 		// goes through each column
 		// (except for what the sidebar is occupying)
 		for (int column = SIDEBAR_WIDTH; column < VGA_WIDTH; column++)
 		{
-			// sets the TTY column to the
+			// sets the BIOS VGA column to the
 			// iterating column variable
-			tty_column = column;
+			bios_vga_column = column;
 			// sets the current cursor placement
 			// to an empty character
-			tty_insert_entry(' ');
+			bios_vga_insert_entry(' ');
 		}
 	}
 
 	// calculate where to start placing text
 	// to make it centered
 	int starting_column = (VGA_WIDTH + SIDEBAR_WIDTH - strlen(text)) / 2;
-	// set the TTY cursor column to the
+	// set the BIOS VGA cursor column to the
 	// calculated text start
-	tty_column = starting_column;
+	bios_vga_column = starting_column;
 	// get the center of the height
 	int text_row = (height / 2);
 	if (height % 2 == 0)
 		// lower the text row by 1 if
 		// the height is even
 		text_row--;
-	// set the TTY row cursor to the
+	// set the BIOS VGA row cursor to the
 	// height center
-	tty_row = text_row;
+	bios_vga_row = text_row;
 	// write the passed text
-	tty_write_string(text);
+	bios_vga_write_string(text);
 
-	// sets the TTY row cursor to the
+	// sets the BIOS VGA row cursor to the
 	// lowest place on the height
-	tty_row = height - 1;
+	bios_vga_row = height - 1;
 	// iterate through each column
 	for (int column = SIDEBAR_WIDTH; column < VGA_WIDTH; column++)
 	{
-		// set the TTY column cursor to
+		// set the BIOS VGA column cursor to
 		// the current iterated column
-		tty_column = column;
+		bios_vga_column = column;
 		// set the separator character
-		tty_insert_entry(separator);
+		bios_vga_insert_entry(separator);
 	}
 
 	// set the main block element row
@@ -136,8 +136,8 @@ void ttui_create_title(
 	// row of margin
 	MAIN_BLOCK_NEXT_ELEMENT_ROW = height + 1;
 
-	// reset the TTY color to default
-	reset_tty_color();
+	// reset the BIOS VGA color to default
+	reset_bios_vga_color();
 }
 
 // creates a sidebar
@@ -155,42 +155,42 @@ void ttui_create_sidebar(
 	// passed arguments
 	foreground = select_color(foreground, default_color_foreground);
 	background = select_color(background, default_color_background);
-	// sets the TTY color to the selected
+	// sets the BIOS VGA color to the selected
 	// colors
-	tty_color = vga_entry_color(foreground, background);
-	// loop through each row in the TTY
+	bios_vga_color = vga_entry_color(foreground, background);
+	// loop through each row in the BIOS VGA
 	for (int row = 0; row < VGA_HEIGHT + 1; row++)
 	{
 		// loop through each column for the
 		// width of the sidebar
 		for (int column = 0; column < SIDEBAR_WIDTH; column++)
 		{
-			// sets the TTY column to the
+			// sets the BIOS VGA column to the
 			// currently iterated column
-			tty_column = column;
+			bios_vga_column = column;
 			// sets a separator character if it is
 			// on the end of the sidebar
 			// otherwise sets an empty character
 			if (column == SIDEBAR_WIDTH - 1)
-				tty_insert_entry(separator);
+				bios_vga_insert_entry(separator);
 			else
-				tty_insert_entry(' ');
+				bios_vga_insert_entry(' ');
 		}
-		// sets the TTY row to the
+		// sets the BIOS VGA row to the
 		// currently iterating row
-		tty_row = row;
+		bios_vga_row = row;
 
 		// commented out since i need
 		// to improve this part of code
 		//
 		// if (i == 1)
-		//	tty_insert_entry(connected_separator);
+		//	bios_vga_insert_entry(connected_separator);
 		//	else
-		//		tty_insert_entry(separator);
+		//		bios_vga_insert_entry(separator);
 	}
 
-	// resets the TTY buffer color
-	reset_tty_color();
+	// resets the BIOS VGA buffer color
+	reset_bios_vga_color();
 }
 
 // initializes the TTUI library
@@ -203,8 +203,8 @@ void ttui_initialize(enum VGA_COLOR foreground, enum VGA_COLOR background)
 		default_color_background = background;
 
 	// sets the color
-	tty_color =
+	bios_vga_color =
 		vga_entry_color(default_color_foreground, default_color_background);
-	// clears the TTY with the color
-	tty_clear();
+	// clears the BIOS VGA with the color
+	bios_vga_clear();
 }
