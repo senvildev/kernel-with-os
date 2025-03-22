@@ -13,7 +13,7 @@
 // initialize the user level space
 void initialize_system(void)
 {
-	tty_clear();
+	bios_vga_clear();
 	print("Hello, Userspace!\n");
 	// initializes a custom text based UI
 	ttui_initialize(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
