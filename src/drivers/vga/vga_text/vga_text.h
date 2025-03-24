@@ -42,8 +42,6 @@ enum VGA_COLOR
 	VGA_COLOR_DEFAULT = 255
 };
 
-#endif
-
 // create the VGA color data
 // arguments:
 //	  - foreground - text color
@@ -62,6 +60,8 @@ static inline uint16_t vga_entry(unsigned char character, uint8_t color)
 {
 	return (uint16_t)character | (uint16_t)color << 8;
 }
+
+#endif
 
 // initialize the VGA text with a blank screen
 void vga_text_initialize(void);
