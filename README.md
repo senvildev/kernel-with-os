@@ -7,7 +7,6 @@ simple kernel with an os
 - grub <br>
 - i686-elf-as <br>
 - i686-elf-gcc <br>
-- a brain
 
 # clangd
 
@@ -23,6 +22,4 @@ CompileFlags:
 
 # system info
 
-## src/libs/
-
-this directory is dedicated for libraries to be used inside protected mode
+wip
