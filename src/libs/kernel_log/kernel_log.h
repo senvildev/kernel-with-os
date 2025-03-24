@@ -1,6 +1,8 @@
 #ifndef KERNEL_LOG_H
 #define KERNEL_LOG_H
 
+#endif
+
 // log a message from the kernel
 // arguments:
 //	  - type - what kind of message it is
@@ -10,5 +12,3 @@
 //			 - 3 is an info
 //	  - *message - string containing the message to log
 void kernel_log(int type, const char *message);
-
-#endif

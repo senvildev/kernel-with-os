@@ -1,7 +1,7 @@
+#include <stdint.h>
+
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
-
-#include <stdint.h>
 
 // defines a type for keyboard callback functions
 // consists of a pointer to the function
@@ -18,6 +18,8 @@ extern callback_function keyboard_callbacks[KEYBOARD_CALLBACK_LIMIT];
 // variable that stores the next index available
 // for a new keyboard callback
 extern int callbacks_next_index;
+
+#endif
 
 // registers a callback by adding it to the
 // keyboard_callbacks array
@@ -45,5 +47,3 @@ void keyboard_handler(void);
 // by creating an entry in the IDT and
 // attaching assembly code to it
 void initialize_keyboard(void);
-
-#endif

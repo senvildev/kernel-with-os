@@ -1,8 +1,8 @@
-#ifndef TTUI_H
-#define TTUI_H
-
 #include "global/defines.h"
 #include "drivers/vga/vga_text/vga_text.h"
+
+#ifndef TTUI_H
+#define TTUI_H
 
 // variables holding UI
 // manipulation data
@@ -12,6 +12,8 @@ extern int MAIN_BLOCK_NEXT_ELEMENT_ROW;
 // variables holding the default colors
 extern enum VGA_COLOR default_color_foreground;
 extern enum VGA_COLOR default_color_background;
+
+#endif
 
 // writes text to the main block
 // and creates an empty space below it
@@ -70,5 +72,3 @@ void ttui_create_sidebar(
 //	- background - VGA_COLOR_BLACK
 // if they received a VGA_COLOR_DEFAULT value
 void ttui_initialize(enum VGA_COLOR foreground, enum VGA_COLOR background);
-
-#endif

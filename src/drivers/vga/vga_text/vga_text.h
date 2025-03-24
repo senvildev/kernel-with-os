@@ -1,9 +1,9 @@
+#include <stddef.h>
+#include <stdint.h>
+
 // VGA text macro
 #ifndef VGA_TEXT_H
 #define VGA_TEXT_H
-
-#include <stddef.h>
-#include <stdint.h>
 
 #define VGA_WIDTH 80  // width of the screen
 #define VGA_HEIGHT 25 // height of the screen
@@ -41,6 +41,8 @@ enum VGA_COLOR
 
 	VGA_COLOR_DEFAULT = 255
 };
+
+#endif
 
 // create the VGA color data
 // arguments:
@@ -89,5 +91,3 @@ void vga_text_write(const char *data, size_t size);
 // arguments:
 //	  - *data - set of characters to write
 void vga_text_write_string(const char *data);
-
-#endif

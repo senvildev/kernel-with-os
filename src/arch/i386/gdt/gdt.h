@@ -31,6 +31,8 @@ extern struct gdt_entry gdt_entries[GDT_SEGMENT_LIMIT];
 // pointer to the GDT
 extern struct gdt_pointer gdt_pointer;
 
+#endif
+
 // sets up an entry
 // arguments:
 //	  - num - which gate in the table to change
@@ -43,5 +45,3 @@ void gdt_set_entry(
 
 // function that sets up and loads the GDT using assembly
 void gdt_load(void);
-
-#endif

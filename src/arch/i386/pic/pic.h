@@ -1,7 +1,7 @@
+#include <stdint.h>
+
 #ifndef PIC_H
 #define PIC_H
-
-#include <stdint.h>
 
 // define ports for the PIC
 //	  - intel 8259 PIC chips come in a
@@ -98,6 +98,9 @@
 //	  it writes 0 to port 0x80 using the outb
 //	  instruction. writing to this port takes a
 //	  small amount of time, creating a delay
+
+#endif
+
 static inline void io_wait(void)
 {
 	__asm__ volatile("outb %%al, $0x80" : : "a"(0));
@@ -146,5 +149,3 @@ void pic_send_eoi(uint8_t irq);
 
 void pic_disable_irq(uint8_t irq);
 void pic_disable_all_irqs(void);
-
-#endif

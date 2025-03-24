@@ -1,7 +1,7 @@
+#include <stdint.h>
+
 #ifndef INTERRUPT_HANDLERS_H
 #define INTERRUPT_HANDLERS_H
-
-#include <stdint.h>
 
 // defining an ISR handler type for a function below
 typedef void (*isr_handler_t)(void);
@@ -41,6 +41,11 @@ extern void isr29(void);
 extern void isr30(void);
 extern void isr31(void);
 
+// C code handlers are inside the respective C file
+// they are called from the assembly file ./interrupt_stubs.asm
+
+#endif
+
 // function that returns a list of ISR handlers
 static inline isr_handler_t *get_isr_handlers(void)
 {
@@ -52,8 +57,3 @@ static inline isr_handler_t *get_isr_handlers(void)
 		isr24, isr25, isr26, isr27, isr28, isr29, isr30, isr31};
 	return handlers; // return the array
 }
-
-// C code handlers are inside the respective C file
-// they are called from the assembly file ./interrupt_stubs.asm
-
-#endif
